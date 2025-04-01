@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP Security
  * Description: Improves security of WordPress
- * Version: 1.0.0
+ * Version: 1.0.1
  */
 
 if (!defined('ABSPATH')) {
