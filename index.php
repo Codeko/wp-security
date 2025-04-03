@@ -1,8 +1,10 @@
 <?php
 /**
- * Plugin Name: WP Security
+ * Plugin Name: POLA-CDK - WP Security
  * Description: Improves security of WordPress
- * Version: 1.0.1
+ * Version: 1.0.2
+ * Author: Pola Network
+ * Author URI: https://github.com/Codeko/wp-security
  */
 
 if (!defined('ABSPATH')) {
