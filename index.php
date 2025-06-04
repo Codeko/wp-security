@@ -95,6 +95,15 @@ function wp_security_secure_cookie()
     @ini_set('session.use_strict_mode', 1);
 }
 
+function wp_security_login_error_message( $message ) {
+    if ( strpos( $message, "ERROR:" ) !== false ) {
+        $message = "Incorrect username or password.";
+    }
+    return $message;
+}
+add_filter( 'login_errors', 'wp_security_login_error_message' );
+
+
 function wp_security_disable_feed()
 {
     global $wp_query;
