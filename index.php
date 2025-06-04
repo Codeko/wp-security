@@ -2,7 +2,7 @@
 /**
  * Plugin Name: POLA-CDK - WP Security
  * Description: Improves security of WordPress
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Pola Network
  * Author URI: https://github.com/Codeko/wp-security
  */
@@ -14,6 +14,10 @@ if (!defined('ABSPATH')) {
 const WPSP_HTACCESS_MARKER = "WpSecurityPlugin";
 const WPSP_HTACCESS_BLOCKS = array(
     "<ifModule mod_headers.c>\nHeader set X-Frame-Options SAMEORIGIN\n</ifModule>",
+    "RewriteEngine On\nRewriteCond %{REQUEST_URI} ^/wp-cron.php\nRewriteRule ^(.*)$ - [L,R=404]",
+    "RewriteEngine On\nRewriteCond %{REQUEST_URI} ^/.git\nRewriteRule ^(.*)$ - [L,R=404]",
+    "RewriteEngine On\nRewriteCond %{REQUEST_URI} ^/readme.html\nRewriteRule ^(.*)$ - [L,R=404]",
+    "RewriteEngine On\nRewriteCond %{REQUEST_URI} ^/xmlrpc.php\nRewriteRule ^(.*)$ - [L,R=404]",
 );
 
 
@@ -41,7 +45,7 @@ add_action('plugins_loaded', 'wp_security_plugin_loaded');
 
 function wp_security_plugin_deactivate()
 {
-    wp_security_add_htaccess_rules(["# WP Security plugin deactivated", "# this block can be safely removed"]);
+    wp_security_add_htaccess_rules(["# WP Security plugin is deactivated", "# this block can be safely removed"]);
 }
 
 add_action("deactivate_plugin", "wp_security_plugin_deactivate", 10, 1);
