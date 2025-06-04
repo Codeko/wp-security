@@ -11,6 +11,16 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+function wp_security_activation()
+{
+    if (!is_admin()) {
+        return;
+    }
+    wp_security_add_htaccess_rules();
+}
+register_activation_hook( __FILE__, 'wp_security_activation' );
+
+
 add_action( 'init', 'wp_security_github_plugin_updater' );
 
 function wp_security_github_plugin_updater() {
@@ -72,6 +82,20 @@ function wp_security_sar_block_xmlrpc_attacks( $methods ) {
 	unset( $methods['pingback.ping'] );
 	unset( $methods['pingback.extensions.getPingbacks'] );
 	return $methods;
+}
+
+/**
+ * Add rules to HTACCESS file
+ */
+function wp_security_add_htaccess_rules(){
+    $blocks = array(
+        "<ifModule mod_headers.c>\nHeader set X-Frame-Options SAMEORIGIN\n</ifModule>",
+    );
+    $marker = "WpSecurityPlugin";
+    $htaccess_path = ABSPATH . '.htaccess';
+    if (file_exists($htaccess_path)) {
+        insert_with_markers($htaccess_path, $marker, $blocks);
+    }
 }
 
 /**
