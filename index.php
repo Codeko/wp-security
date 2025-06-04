@@ -103,6 +103,18 @@ function wp_security_login_error_message( $message ) {
 }
 add_filter( 'login_errors', 'wp_security_login_error_message' );
 
+function wp_security_hide_users_list( $errors ) {
+
+    $path = ltrim( $GLOBALS['wp']->query_vars['rest_route'], '/' );
+
+    if ( strpos( $path, 'wp/v2/users' ) !== false ) {
+    return new WP_Error( 'rest_no_route', "No route was found matching the URL and request method.", array( 'status' => 404 ) );
+    }
+
+    return $errors;
+}
+add_filter( 'rest_authentication_errors','wp_security_hide_users_list');
+
 
 function wp_security_disable_feed()
 {
