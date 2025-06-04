@@ -49,6 +49,14 @@ function wp_security_custom_author_url(){
 }
 add_filter('author_link', 'wp_security_custom_author_url');
 
+function wp_security_secure_cookie() {
+    @ini_set('session.cookie_httponly', true);
+    @ini_set('session.cookie_secure', true);
+    @ini_set('session.use_only_cookies', true);
+    @ini_set('session.use_strict_mode', 1);
+}
+add_action('plugins_loaded', 'wp_security_secure_cookie');
+
 function wp_security_disable_feed(){
     global $wp_query;
     $wp_query->set_404();
