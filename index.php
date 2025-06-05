@@ -179,7 +179,7 @@ function  wp_security_admin_notice() {
             $server_header = $value;
         }
     }
-    if (strlen($server_header) > 9) {
+    if (strlen($server_header) > 14) {
         ?>
         <div class="notice notice-info is-dismissible">
             <p><b>POLA-CDK - WP Security information:</b></p>
