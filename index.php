@@ -2,7 +2,7 @@
 /**
  * Plugin Name: POLA-CDK - WP Security
  * Description: Improves security of WordPress
- * Version: 1.0.3
+ * Version: 1.1.0
  * Author: Pola Network
  * Author URI: https://github.com/Codeko/wp-security
  */
