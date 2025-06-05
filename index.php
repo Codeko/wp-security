@@ -171,6 +171,26 @@ function wp_security_get_plugin_version()
     return $plugin_data['Version'];
 }
 
+function  wp_security_admin_notice() {
+    file_get_contents(site_url());
+    $server_header = "";
+    foreach ($http_response_header as $key => $value) {
+        if (substr(strtolower($value), 0, 7) == "server:") {
+            $server_header = $value;
+        }
+    }
+    if (strlen($server_header) > 9) {
+        ?>
+        <div class="notice notice-info is-dismissible">
+            <p><b>POLA-CDK - WP Security information:</b></p>
+            <p><?php _e('The "Server" HTTP header is'); ?>
+            <strong><?php echo $server_header; ?></strong>.
+            <?php _e('It may be providing version information. This can be useful for brute-force attacks. You may want to review it.'); ?></p>
+        </div>
+        <?php
+    }
+}
+add_action('admin_notices', 'wp_security_admin_notice');
 
 /**
  * Check WP version.
