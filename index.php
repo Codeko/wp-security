@@ -2,10 +2,12 @@
 /**
  * Plugin Name: POLA-CDK - WP Security
  * Description: Improves security of WordPress
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Pola Network
  * Author URI: https://github.com/Codeko/wp-security
  */
+
+use PolaCDK\PolaCDK_Control;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -14,12 +16,9 @@ if (!defined('ABSPATH')) {
 add_action( 'init', 'wp_security_github_plugin_updater' );
 
 function wp_security_github_plugin_updater() {
-    if (!class_exists( 'WP_GitHub_Updater' ) ){
-        include_once('updater.php');
-    }
-    define( 'WP_GITHUB_FORCE_UPDATE', true );
-
-    if (is_admin()) { // note the use of is_admin() to double check that this is happening in the admin
+    echo "aaa";
+    if (class_exists('\PolaCDK\PolaCDK_Control') ) {
+        echo "bbbb";
         $config = array(
             'slug' => plugin_basename(__FILE__), // this is the slug of your plugin
             'proper_folder_name' => 'wp-security', // this is the name of the folder your plugin lives in
@@ -32,7 +31,7 @@ function wp_security_github_plugin_updater() {
             'tested' => '6.4.1', // which version of WordPress is your plugin tested up to?
             'readme' => 'README.md', // which file to use as the readme for the version number
         );
-        new WP_GitHub_Updater($config);
+        PolaCDK_Control::plugin_updater($config);
     }
 }
 
@@ -71,9 +70,9 @@ add_filter( 'xmlrpc_methods', 'wp_security_sar_block_xmlrpc_attacks' );
  * @param array $methods Array of current XML-RPC methods.
  */
 function wp_security_sar_block_xmlrpc_attacks( $methods ) {
-	unset( $methods['pingback.ping'] );
-	unset( $methods['pingback.extensions.getPingbacks'] );
-	return $methods;
+    unset( $methods['pingback.ping'] );
+    unset( $methods['pingback.extensions.getPingbacks'] );
+    return $methods;
 }
 
 /**
@@ -81,25 +80,25 @@ function wp_security_sar_block_xmlrpc_attacks( $methods ) {
  */
 if ( version_compare( get_bloginfo( 'version' ), '4.4', '>=' ) ) {
 
-	add_action( 'wp', 'wp_security_sar_remove_x_pingback_header_44', 9999 );
+    add_action( 'wp', 'wp_security_sar_remove_x_pingback_header_44', 9999 );
 
-	/**
-	 * Remove X-Pingback from Header for WP 4.4+.
-	 */
-	function wp_security_sar_remove_x_pingback_header_44() {
-		header_remove( 'X-Pingback' );
-	}
+    /**
+     * Remove X-Pingback from Header for WP 4.4+.
+     */
+    function wp_security_sar_remove_x_pingback_header_44() {
+        header_remove( 'X-Pingback' );
+    }
 } elseif ( version_compare( get_bloginfo( 'version' ), '4.4', '<' ) ) {
 
-	add_filter( 'wp_headers', 'wp_security_sar_remove_x_pingback_header' );
+    add_filter( 'wp_headers', 'wp_security_sar_remove_x_pingback_header' );
 
-	/**
-	 * Remove X-Pingback from Header for older WP versions.
-	 *
-	 * @param array $headers Array with current headers.
-	 */
-	function wp_security_sar_remove_x_pingback_header( $headers ) {
-		unset( $headers['X-Pingback'] );
-		return $headers;
-	}
+    /**
+     * Remove X-Pingback from Header for older WP versions.
+     *
+     * @param array $headers Array with current headers.
+     */
+    function wp_security_sar_remove_x_pingback_header( $headers ) {
+        unset( $headers['X-Pingback'] );
+        return $headers;
+    }
 }
