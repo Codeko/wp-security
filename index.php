@@ -16,9 +16,7 @@ if (!defined('ABSPATH')) {
 add_action( 'init', 'wp_security_github_plugin_updater' );
 
 function wp_security_github_plugin_updater() {
-    echo "aaa";
     if (class_exists('\PolaCDK\PolaCDK_Control') ) {
-        echo "bbbb";
         $config = array(
             'slug' => plugin_basename(__FILE__), // this is the slug of your plugin
             'proper_folder_name' => 'wp-security', // this is the name of the folder your plugin lives in
